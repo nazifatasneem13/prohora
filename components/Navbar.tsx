@@ -1,8 +1,10 @@
 "use client";
+
 import Link from "next/link";
 import { useState } from "react";
 import MobileMenu from "./MobileMenu";
 import { ModeToggle } from "./ui/ModeToggle/ModeToggle";
+import Script from "next/script";
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -35,29 +37,29 @@ export default function Navbar() {
               </Link>
 
               <Link
-                href={"/track-report"}
+                href="/track-report"
                 className="text-sm text-black dark:text-zinc-400 transition-all duration-300 ease-in-out hover:text-amber-600 dark:hover:text-white hover:scale-105"
               >
                 Track Report
               </Link>
               <Link
-                href={"/how-it-works"}
+                href="/how-it-works"
                 className="text-sm text-black dark:text-zinc-400 transition-all duration-300 ease-in-out hover:text-amber-600 dark:hover:text-white hover:scale-105"
               >
                 How It Works
               </Link>
               <Link
-                href={"/resources"}
+                href="/resources"
                 className="text-sm text-black dark:text-zinc-400 transition-all duration-300 ease-in-out hover:text-amber-600 dark:hover:text-white hover:scale-105"
               >
                 Resources
               </Link>
             </div>
 
-            {/* Emergency button */}
+            {/* Emergency button and mobile menu */}
             <div className="flex items-center space-x-4">
               <Link
-                href={"/contact"}
+                href="/contact"
                 className="hidden md:block text-sm text-black hover:text-amber-800 dark:text-zinc-400 dark:hover:text-white transition-colors"
               >
                 Contact
@@ -87,7 +89,7 @@ export default function Navbar() {
                   />
                 </svg>
               </button>
-              <div className="overflow-visible ">
+              <div className="overflow-visible">
                 <ModeToggle />
               </div>
             </div>
@@ -102,6 +104,38 @@ export default function Navbar() {
           setIsMobileMenuOpen(false);
         }}
       />
+
+      {/* Chatbase Chatbot Script */}
+      <Script id="chatbase-init" strategy="afterInteractive">
+        {`
+          (function(){
+            if(!window.chatbase || window.chatbase("getState") !== "initialized"){
+              window.chatbase = (...arguments) => {
+                if(!window.chatbase.q){ window.chatbase.q = []; }
+                window.chatbase.q.push(arguments);
+              };
+              window.chatbase = new Proxy(window.chatbase, {
+                get(target, prop){
+                  if(prop === "q"){ return target.q; }
+                  return (...args) => target(prop, ...args);
+                }
+              });
+            }
+            const onLoad = function(){
+              const script = document.createElement("script");
+              script.src = "https://www.chatbase.co/embed.min.js";
+              script.id = "oAYgEivQ-GHYNqsWsq1lr";
+              script.domain = "www.chatbase.co";
+              document.body.appendChild(script);
+            };
+            if(document.readyState === "complete"){
+              onLoad();
+            } else {
+              window.addEventListener("load", onLoad);
+            }
+          })();
+        `}
+      </Script>
     </>
   );
 }

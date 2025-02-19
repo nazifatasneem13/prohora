@@ -19,7 +19,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "dotenv": "^16.4.7",
-    "framer-motion": "^12.4.2",
+    "framer-motion": "^12.4.4",
     "lucide-react": "^0.474.0",
     "mapbox": "^1.0.0-beta10",
     "mongodb": "^6.12.0",
